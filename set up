@@ -59,11 +59,26 @@ seanjung@cloudshell:~ (sanguine-theory-307007)$ edit schema_bitcoin.json
 seanjung@cloudshell:~ (sanguine-theory-307007)$ bq mk --table Minerva.bitcoin_blocks_from_bq schema_bitcoin.json
 Table 'sanguine-theory-307007:Minerva.bitcoin_blocks_from_bq' successfully created.
 
-# Load csv to table
+# Load CSV file to table
 seanjung@cloudshell:~ (sanguine-theory-307007)$ bq load --autodetect --replace --source_format=CSV Minerva.bitcoin_blocks_from_bq gs://minerva-sean/bitcoin_blocks_csv.csv
 Waiting on bqjob_r10e9211e29b9a00_0000017a98663fdb_1 ... (34s) Current status: DONE   
 
+# Load AVRO file to table
+seanjung@cloudshell:~ (sanguine-theory-307007)$ bq load --autodetect --replace --source_format=AVRO Minerva.bitcoin_blocks_from_bq_avro gs://minerva-sean/bitcoin_blocks_avro
+Waiting on bqjob_r25717812599cd5b5_0000017a986f1e1f_1 ... (34s) Current status: DONE  
 
+# Load JSON file to table 
+seanjung@cloudshell:~ (sanguine-theory-307007)$ bq load --autodetect --replace --source_format=NEWLINE_DELIMITED_JSON Minerva.bitcoin_blocks_from_bq_json gs://minerva-sean/bitcoin_blocks_json
+Waiting on bqjob_r81e45edf7eb040f_0000017a9871fb21_1 ... (34s) Current status: DONE  
 
+# Extratct table to Parquet format
+bq extract \
+--destination_format PARQUET \
+'Minerva.bitcoin_blocks' \
+gs://minerva-sean/bitcoin_blocks_parquet
+
+# Load PARQUET file to table 
+seanjung@cloudshell:~ (sanguine-theory-307007)$ bq load --autodetect --replace --source_format=PARQUET Minerva.bitcoin_blocks_from_bq_parquet gs://minerva-sean/bitcoin_blocks_parquet
+Waiting on bqjob_r5616bf71ac89461d_0000017a987a9195_1 ... (23s) Current status: DONE 
 
 
