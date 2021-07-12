@@ -1,0 +1,69 @@
+Go to GCP console -> Click Cloud shell icon in the upper right conner
+
+seanjung@cloudshell:~ (sanguine-theory-307007)$ ls
+bitcoin_blocks_csv.csv  README-cloudshell.txt  schema_bitcoin.json
+
+# Create Bucket using gsutil mb
+seanjung@cloudshell:~ (sanguine-theory-307007)$ gsutil mb gs://minerva-sean
+Creating gs://minerva-sean/...
+
+# Check bucket list
+seanjung@cloudshell:~ (sanguine-theory-307007)$ gsutil ls
+gs://cloud-ai-platform-a4c38059-fe73-4f8a-a558-bf12a8543c43/
+gs://minerva-sean/
+gs://sanguine-theory-307007.appspot.com/
+gs://staging.sanguine-theory-307007.appspot.com/
+gs://test-seanjung/
+
+# Copy Sample CSV file to GCS bucket
+seanjung@cloudshell:~ (sanguine-theory-307007)$ gsutil cp bitcoin_blocks_csv.csv gs://minerva-sean
+Copying file://bitcoin_blocks_csv.csv [Content-Type=text/csv]...
+==> NOTE: You are uploading one or more large file(s), which would run
+significantly faster if you enable parallel composite uploads. This
+feature can be enabled by editing the
+"parallel_composite_upload_threshold" value in your .boto
+configuration file. However, note that if you do this large files will
+be uploaded as `composite objects
+<https://cloud.google.com/storage/docs/composite-objects>`_,which
+means that any user who downloads such objects will need to have a
+compiled crcmod installed (see "gsutil help crcmod"). This is because
+without a compiled crcmod, computing checksums on composite objects is
+so slow that gsutil disables downloads of composite objects.
+
+/ [1 files][214.5 MiB/214.5 MiB]
+Operation completed over 1 objects/214.5 MiB.
+
+# Check file list
+seanjung@cloudshell:~ (sanguine-theory-307007)$ gsutil ls gs://minerva-sean
+gs://minerva-sean/bitcoin_blocks_csv.csv
+
+
+# Load csv from GCS to BigQuery
+
+# show BigQuery Dataset & Tables
+seanjung@cloudshell:~ (sanguine-theory-307007)$ bq ls
+  datasetId
+ -----------
+  Minerva
+  mydataset
+seanjung@cloudshell:~ (sanguine-theory-307007)$ bq ls Minerva
+     tableId       Type    Labels   Time Partitioning   Clustered Fields
+ ---------------- ------- -------- ------------------- ------------------
+  bitcoin_blocks   TABLE
+
+# saving Schema from existing table
+sseanjung@cloudshell:~ (sanguine-theory-307007)$ bq show --schema Minerva.bitcoin_blocks > schema_bitcoin.json
+seanjung@cloudshell:~ (sanguine-theory-307007)$ edit schema_bitcoin.json
+
+# Make Bigquery table 
+seanjung@cloudshell:~ (sanguine-theory-307007)$ bq mk --table Minerva.bitcoin_blocks_from_bq schema_bitcoin.json
+Table 'sanguine-theory-307007:Minerva.bitcoin_blocks_from_bq' successfully created.
+
+# Load csv to table
+seanjung@cloudshell:~ (sanguine-theory-307007)$ bq load --autodetect --replace --source_format=CSV Minerva.bitcoin_blocks_from_bq gs://minerva-sean/bitcoin_blocks_csv.csv
+Waiting on bqjob_r10e9211e29b9a00_0000017a98663fdb_1 ... (34s) Current status: DONE   
+
+
+
+
+
