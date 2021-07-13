@@ -82,3 +82,19 @@ gem install google-cloud-asset
 https://www.kangtaeho.com/61
 
 
+
+[seanjung@minerva2 ~]$ embulk gem install google-cloud-asset
+2021-07-13 03:28:51.294 +0000: Embulk v0.9.23
+
+Gem plugin path is: /home/seanjung/.embulk/lib/gems
+
+Fetching: faraday-em_http-1.0.0.gem (100%)
+ERROR:  Error installing google-cloud-asset:
+        faraday-em_http requires Ruby version >= 2.4.0.
+
+## install plug-in 
+$embulk gem install embulk-output-bigquery
+
+
+## edit config.yml
+
