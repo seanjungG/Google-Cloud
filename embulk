@@ -1,0 +1,84 @@
+# Create VM - connect SSH
+
+
+# Embulk runs on Java. Make sure Java Runtime is installed.
+# Embulk v0.9 and v0.10 run on Java 8. Java 9 is not supported officially.
+# https://www.embulk.org/
+
+# Installing Java 8 on CentOS 7
+# https://www.liquidweb.com/kb/install-java-8-on-centos-7/
+Step 1: Update
+As a matter of best practice we’ll update before installing any new programs:
+
+yum -y update
+
+Step 2: Install Java 8
+yum install java-1.8.0-openjdk
+
+Step 3:  Verify Java is Installed
+java -version
+
+Example Output:
+
+java -version
+openjdk version "1.8.0_191"
+OpenJDK Runtime Environment (build 1.8.0_191-b12)
+OpenJDK 64-Bit Server VM (build 25.191-b12, mixed mode)
+
+Set Java’s Home Environment
+
+
+
+
+
+[seanjung@minerva2 ~]$ java --version
+Unrecognized option: --version
+Error: Could not create the Java Virtual Machine.
+Error: A fatal exception has occurred. Program will exit.
+[seanjung@minerva2 ~]$ java -version
+openjdk version "1.8.0_292"
+OpenJDK Runtime Environment (build 1.8.0_292-b10)
+OpenJDK 64-Bit Server VM (build 25.292-b10, mixed mode)
+[seanjung@minerva2 ~]$ embulk example
+2021-07-12 07:50:35.718 +0000: Embulk v0.9.23
+Creating embulk-example directory...
+  Creating embulk-example/
+  Creating embulk-example/csv/
+  Creating embulk-example/csv/sample_01.csv.gz
+  Creating embulk-example/seed.yml
+
+Run following subcommands to try embulk:
+
+   1. embulk guess embulk-example/seed.yml -o config.yml
+   2. embulk preview config.yml
+   3. embulk run config.yml
+
+embulk example ./try1
+embulk guess ./try1/seed.yml -o config.yml
+embulk preview config.yml
+embulk run config.yml
+
+
+### 
+insert data over streaming inserts
+for continuous real-time insertions
+Please use other product, like fluent-plugin-bigquery
+
+#embulk input / output plug-in
+
+$ embulk gem install embulk-input-mysql
+$ embulk gem install embulk-output-mysql
+$ embulk gem install embulk-input-gcs
+$ embulk gem install embulk-output-gcs
+
+### sample
+https://jungwoon.github.io/bigdata/2017/08/31/Embulk_Setup.html
+
+
+###
+sudo yum install -y ruby ruby-devel rubygems
+gem install google-cloud-asset
+
+https://www.kangtaeho.com/61
+
+
